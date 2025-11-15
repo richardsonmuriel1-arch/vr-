@@ -1,0 +1,1129 @@
+﻿<krpano version="1.21" title="Virtual Tour">
+
+	<include url="skin/vtourskin.xml" />
+
+	<plugin name="soundinterface"
+		url="%VIEWER%/plugins/soundinterface.js"
+		rootpath=""
+		preload="true"
+		keep="true"
+		/>
+
+	<include url="popups.xml" />
+
+	<include url="hotspots.xml" />
+
+	<include url="skin/loadingbar.xml" />
+
+	<style name="roomspot" alpha="0.0" capture="false" />
+
+	<action name="scene3dtransition" scope="local" args="scenename, hlookatoffset">
+		motionblur = 0.5;
+		transitiondelay = 0.0;
+		transitiontime = 0.5;
+		transitiontweentype = "easeoutquad";
+		
+		if(caller AND caller.ishotspot,
+			<!-- called from a hotspot, move toward the hotspot -->
+			if(caller.depth == 0,
+				<!-- 3d placed hotspot -->
+				set3dtransition("image", caller.tx,caller.ty,caller.tz, motionblur, hlookatoffset, transitiondelay, transitiontime, transitiontweentype);
+			  ,
+				<!-- a hotspot with a spherical position -->
+				caller.getcenter(h,v);
+				if(v GT -50 AND v LT +50 AND caller.depth GT 120, set(v,0));
+				set3dtransition("sphere", h,v,(min(caller.depth,1000)), motionblur, hlookatoffset, transitiondelay, transitiontime, transitiontweentype);
+			);
+		  ,
+			<!-- called from a layer or a script, recenter at the new pano center (3d-model/depthmap panos only) -->
+			if(image.depthmap.url,
+				set3dtransition("image", 0,0,0, motionblur, hlookatoffset, transitiondelay, transitiontime, transitiontweentype);
+			);
+		);
+		
+		loadscene(get(scenename), null, MERGE, BLEND(get(transitiontime),get(transitiontweentype)));
+	</action>
+
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<skin_settings maps="false"
+	               maps_type="google"
+	               maps_bing_api_key=""
+	               maps_google_api_key=""
+	               maps_zoombuttons="false"
+	               maps_loadonfirstuse="true"
+	               gyro="true"
+	               gyro_keeplookingdirection="false"
+	               webvr="true"
+	               webvr_keeplookingdirection="true"
+	               webvr_prev_next_hotspots="true"
+	               autotour="false"
+	               littleplanetintro="true"
+	               followmousecontrol="true"
+	               title="true"
+	               thumbs="true"
+	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
+	               thumbs_opened="false"
+	               thumbs_text="false"
+	               thumbs_dragging="true"
+	               thumbs_onhoverscrolling="false"
+	               thumbs_scrollbuttons="false"
+	               thumbs_scrollindicator="false"
+	               thumbs_loop="false"
+	               tooltips_buttons="false"
+	               tooltips_thumbs="false"
+	               tooltips_hotspots="false"
+	               tooltips_mapspots="false"
+	               deeplinking="false"
+	               loadscene_flags="MERGE"
+	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
+	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
+	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
+	               loadingtext=""
+	               layout_width="100%"
+	               layout_maxwidth="814"
+	               controlbar_width="-24"
+	               controlbar_height="40"
+	               controlbar_offset="-220"
+	               controlbar_offset_closed="-40"
+	               controlbar_overlap.no-fractionalscaling="10"
+	               controlbar_overlap.fractionalscaling="0"
+	               design_skin_images="vtourskin.png"
+	               design_bgcolor="0x2D3E50"
+	               design_bgalpha="0.8"
+	               design_bgborder="0"
+	               design_bgroundedge="1"
+	               design_bgshadow="0 4 10 0x000000 0.3"
+	               design_thumbborder_bgborder="3 0xFFFFFF 1.0"
+	               design_thumbborder_padding="2"
+	               design_thumbborder_bgroundedge="0"
+	               design_text_css="color:#FFFFFF; font-family:Arial;"
+	               design_text_shadow="1"
+	               />
+
+	<!--
+	    For an alternative skin design either change the <skin_settings> values 
+	    from above or optionally include one of the predefined designs from below.
+	-->
+	<!-- <include url="skin/vtourskin_design_flat_light.xml"  /> -->
+	<!-- <include url="skin/vtourskin_design_glass.xml"       /> -->
+	<!-- <include url="skin/vtourskin_design_ultra_light.xml" /> -->
+	<!-- <include url="skin/vtourskin_design_117.xml"         /> -->
+	<!-- <include url="skin/vtourskin_design_117round.xml"    /> -->
+	<!-- <include url="skin/vtourskin_design_black.xml"       /> -->
+
+	
+	<scene name="scene_1-0" title="1-0" onstart="" thumburl="panos/1-0.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="74.398" vlookat="3.911" fovtype="MFOV" fov="120.000" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-0.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-0.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-1);">
+			<point ath="60.932" atv="14.972" />
+			<point ath="50.678" atv="18.809" />
+			<point ath="50.729" atv="-34.038" />
+			<point ath="60.967" atv="-28.008" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-0/1.jpg');">
+			<point ath="-30.522" atv="-10.497" />
+			<point ath="27.980" atv="-11.080" />
+			<point ath="28.179" atv="16.780" />
+			<point ath="-30.631" atv="16.328" />
+		</hotspot>
+
+		<hotspot name="spot1" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" ath="-3.988" atv="2.658" onclick="popup('image', 'new_pano/images/1-0/1.jpg');" use3dtransition="true" />
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'images/1-0/2.jpg');">‘
+			<point ath="148.188" atv="-5.278" />
+			<point ath="156.572" atv="-5.661" />
+			<point ath="156.224" atv="15.961" />
+			<point ath="147.907" atv="14.576" />
+		</hotspot>
+
+		<hotspot name="spot2" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" ath="127.087" onclick="popup('image', 'new_pano/images/1-0/3.jpg');" atv="2.543" use3dtransition="true" />
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'images/1-0/3.jpg');">‘
+			<point ath="116.283" atv="-2.427" />
+			<point ath="116.218" atv="7.331" />
+			<point ath="145.972" atv="14.163" />
+			<point ath="146.418" atv="-4.983" />
+		</hotspot>
+
+		<hotspot name="spot3" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" ath="152.064" atv="5.076" onclick="popup('image', 'new_pano/images/1-0/2.jpg');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_1-1" title="1-1" onstart="" thumburl="panos/1-1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-0" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-0);">
+			<point ath="-128.502" atv="-76.829" />
+			<point ath="-28.723" atv="-69.751" />
+			<point ath="-28.757" atv="42.131" />
+			<point ath="-129.293" atv="53.967" />
+		</hotspot>
+
+		<hotspot name="tp_1-3" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-3);">
+			<point ath="66.621" atv="-14.647" />
+			<point ath="77.573" atv="-15.428" />
+			<point ath="77.934" atv="12.360" />
+			<point ath="66.765" atv="11.573" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/1.jpg');">
+			<point ath="35.213" atv="-30.744" />
+			<point ath="63.589" atv="-18.665" />
+			<point ath="63.592" atv="-6.103" />
+			<point ath="35.105" atv="-10.880" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/2.jpg');">
+			<point ath="63.512" atv="-37.895" />
+			<point ath="76.563" atv="-40.271" />
+			<point ath="76.567" atv="-29.787" />
+			<point ath="63.802" atv="-27.866" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/3.jpg');">
+			<point ath="98.943" atv="-40.960" />
+			<point ath="112.513" atv="-39.152" />
+			<point ath="112.666" atv="-29.047" />
+			<point ath="98.766" atv="-30.781" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/4.png');">
+			<point ath="64.969" atv="-24.322" />
+			<point ath="112.093" atv="-25.496" />
+			<point ath="110.904" atv="-23.191" />
+			<point ath="66.133" atv="-22.662" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/5.jpg');">
+			<point ath="91.375" atv="-12.851" />
+			<point ath="99.179" atv="-12.863" />
+			<point ath="99.446" atv="1.187" />
+			<point ath="91.398" atv="1.211" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/6.jpg');">
+			<point ath="116.646" atv="-15.154" />
+			<point ath="118.594" atv="-16.163" />
+			<point ath="118.840" atv="-2.526" />
+			<point ath="116.460" atv="-2.374" />
+		</hotspot>
+
+		<hotspot name="pic_7" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/7.jpg');">
+			<point ath="152.186" atv="-28.314" />
+			<point ath="159.108" atv="-29.700" />
+			<point ath="159.477" atv="-4.146" />
+			<point ath="151.986" atv="-3.900" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="51.847" atv="-17.016" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="69.840" atv="-34.971" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="106.394" atv="-35.479" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/3.jpg');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="88.973" atv="-26.748" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/4.png');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="95.701" atv="-6.239" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/5.jpg');" use3dtransition="true" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="117.777" atv="-8.987" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/6.jpg');" use3dtransition="true" />
+		<hotspot name="spot7" style="skin_hotspotstyle" ath="155.191" atv="-17.301" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'images/1-1/7.jpg');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_1-2" title="1-2" onstart="" thumburl="panos/1-2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-4" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-4);">
+			<point ath="68.743" atv="-15.227" />
+			<point ath="74.806" atv="-15.847" />
+			<point ath="75.005" atv="4.592" />
+			<point ath="69.055" atv="5.778" />
+		</hotspot>
+
+		<hotspot name="tp_1-4_2" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-4);">
+			<point ath="103.381" atv="-15.980" />
+			<point ath="103.395" atv="3.912" />
+			<point ath="95.414" atv="2.607" />
+			<point ath="95.211" atv="-16.548" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/1.jpg');">
+			<point ath="64.021" atv="-37.354" />
+			<point ath="73.502" atv="-39.476" />
+			<point ath="73.898" atv="-29.742" />
+			<point ath="63.787" atv="-27.910" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/2.jpg');">
+			<point ath="94.426" atv="-41.067" />
+			<point ath="106.324" atv="-39.980" />
+			<point ath="106.502" atv="-30.551" />
+			<point ath="94.586" atv="-31.211" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/3.png');">
+			<point ath="64.915" atv="-24.107" />
+			<point ath="68.234" atv="-22.180" />
+			<point ath="104.003" atv="-23.897" />
+			<point ath="104.855" atv="-26.019" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/4.jpg');">
+			<point ath="108.337" atv="-18.919" />
+			<point ath="121.648" atv="-30.926" />
+			<point ath="121.851" atv="-21.810" />
+			<point ath="108.504" atv="-13.138" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/5.jpg');">
+			<point ath="19.724" atv="-27.399" />
+			<point ath="30.021" atv="-25.683" />
+			<point ath="30.018" atv="0.362" />
+			<point ath="19.449" atv="0.509" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/6.jpg');">
+			<point ath="1.449" atv="-28.409" />
+			<point ath="13.709" atv="-27.737" />
+			<point ath="13.678" atv="0.912" />
+			<point ath="1.417" atv="0.929" />
+		</hotspot>
+
+		<hotspot name="pic_7" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/7.jpg');">
+			<point ath="-3.633" atv="1.621" />
+			<point ath="22.288" atv="1.734" />
+			<point ath="22.974" atv="9.775" />
+			<point ath="-3.547" atv="10.100" />
+		</hotspot>
+
+		<hotspot name="pic_8" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-2/8.jpg');">
+			<point ath="-55.542" atv="-42.562" />
+			<point ath="-29.141" atv="-30.153" />
+			<point ath="-28.839" atv="-27.137" />
+			<point ath="-54.636" atv="-39.431" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="68.959" atv="-34.172" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="100.649" atv="-36.491" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="83.370" atv="-25.326" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/3.png');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="113.966" atv="-20.723" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/4.jpg');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="25.028" atv="-14.050" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/5.jpg');" use3dtransition="true" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="7.752" atv="-14.314" url="images/animatedhotspot_black.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/6.jpg');" use3dtransition="true" />
+		<hotspot name="spot7" style="skin_hotspotstyle" ath="10.017" atv="4.256" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/7.jpg');" use3dtransition="true" />
+		<hotspot name="spot8" style="skin_hotspotstyle" ath="-40.085" atv="-35.385" url="images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/1-2/8.jpg');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_1-3" title="1-3" onstart="" thumburl="panos/1-3.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-3.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-5" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-5);">
+			<point ath="90.255" atv="-14.318" />
+			<point ath="101.760" atv="-14.178" />
+			<point ath="101.681" atv="14.262" />
+			<point ath="90.368" atv="14.581" />
+		</hotspot>
+
+		<hotspot name="tp_1-new-1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-new-1);">
+			<point ath="110.371" atv="-27.494" />
+			<point ath="122.172" atv="-40.892" />
+			<point ath="122.236" atv="46.548" />
+			<point ath="110.474" atv="27.584" />
+		</hotspot>
+
+		<hotspot name="tp_1-1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-1);">
+			<point ath="-110.739" atv="-30.435" />
+			<point ath="-93.893" atv="-33.169" />
+			<point ath="-93.719" atv="15.389" />
+			<point ath="-110.626" atv="13.805" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/1.jpg');">
+			<point ath="-71.792" atv="-30.677" />
+			<point ath="46.042" atv="-64.319" />
+			<point ath="45.598" atv="-25.251" />
+			<point ath="-71.743" atv="-7.829" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/2.jpg');">
+			<point ath="40.168" atv="-80.625" />
+			<point ath="155.893" atv="-78.810" />
+			<point ath="156.812" atv="-72.722" />
+			<point ath="43.662" atv="-76.518" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/3.jpg');">
+			<point ath="177.027" atv="-56.556" />
+			<point ath="179.865" atv="-45.987" />
+			<point ath="179.629" atv="-34.005" />
+			<point ath="176.587" atv="-46.052" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/4.png');">
+			<point ath="71.820" atv="-64.689" />
+			<point ath="55.464" atv="-73.614" />
+			<point ath="177.626" atv="-30.548" />
+			<point ath="170.779" atv="-29.876" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/5.jpg');">
+			<point ath="156.283" atv="-24.616" />
+			<point ath="163.232" atv="-20.079" />
+			<point ath="167.203" atv="6.202" />
+			<point ath="161.064" atv="7.724" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/6.jpg');">
+			<point ath="-169.407" atv="-14.487" />
+			<point ath="-164.693" atv="-14.410" />
+			<point ath="-164.477" atv="0.145" />
+			<point ath="-169.425" atv="-0.102" />
+		</hotspot>
+
+		<hotspot name="pic_7" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/1-1/7.jpg');">
+			<point ath="-134.030" atv="-11.240" />
+			<point ath="-131.681" atv="-11.168" />
+			<point ath="-131.396" atv="0.326" />
+			<point ath="-133.956" atv="0.400" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_1-4" title="1-4" onstart="" thumburl="panos/1-4.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-4.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-6" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-6);">
+			<point ath="3.233" atv="-38.896" />
+			<point ath="32.779" atv="-34.073" />
+			<point ath="33.175" atv="27.594" />
+			<point ath="4.743" atv="30.977" />
+		</hotspot>
+
+		<hotspot name="tp_1-2" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-2);">
+			<point ath="157.851" atv="-43.937" />
+			<point ath="-176.001" atv="-46.504" />
+			<point ath="-176.298" atv="39.116" />
+			<point ath="157.368" atv="36.498" />
+		</hotspot>
+
+		<hotspot name="tp_2-1" style="roomspot|skin_tooltips" tooltip="上楼" onclick="scene3dtransition(scene_2-1);">
+			<point ath="66.300" atv="-43.881" />
+			<point ath="81.587" atv="-46.068" />
+			<point ath="82.027" atv="-20.292" />
+			<point ath="71.661" atv="31.010" />
+			<point ath="68.535" atv="33.922" />
+			<point ath="41.844" atv="25.320" />
+			<point ath="41.663" atv="20.563" />
+			<point ath="63.604" atv="-22.238" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_1-5" title="1-5" onstart="" thumburl="panos/1-5.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-5.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-3" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-3);">
+			<point ath="-172.916" atv="-46.600" />
+			<point ath="-134.579" atv="-37.612" />
+			<point ath="-134.081" atv="32.551" />
+			<point ath="-173.534" atv="41.768" />
+		</hotspot>
+
+		<hotspot name="tp_1-7" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-7);">
+			<point ath="42.765" atv="-32.680" />
+			<point ath="58.859" atv="-24.823" />
+			<point ath="58.368" atv="21.449" />
+			<point ath="43.210" atv="28.404" />
+		</hotspot>
+
+
+	</scene>
+
+	<scene name="scene_1-6" title="1-6" onstart="" thumburl="panos/1-6.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-6.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-8" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-8);">
+			<point ath="-138.587" atv="-65.383" />
+			<point ath="-34.993" atv="-62.030" />
+			<point ath="-35.133" atv="61.101" />
+			<point ath="-138.893" atv="64.846" />
+		</hotspot>
+
+		<hotspot name="tp_1-4" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-4);">
+			<point ath="119.188" atv="-21.043" />
+			<point ath="132.012" atv="-18.005" />
+			<point ath="131.790" atv="16.828" />
+			<point ath="119.410" atv="19.934" />
+		</hotspot>
+
+		<hotspot name="spot1" url="images/arrow.png" ath="94.124" atv="12.615" onloaded="do_crop_animation(64,64, 40);" onclick="popup('image', 'new_pano/images/1-6/2.png');playsound(bgsnd, 'new_pano/media/1-6/2.mp4', 0);" />
+		<hotspot name="spot2" url="images/arrow.png" ath="114.594" atv="11.512" onloaded="do_crop_animation(64,64, 40);" onclick="popup('image', 'new_pano/images/1-6/1.png');playsound(bgsnd, 'new_pano/media/1-6/1.mp4', 0);" />
+		<hotspot name="spot3" url="images/arrow.png" ath="93.895" atv="2.347" onloaded="do_crop_animation(64,64, 40);" rotate="180" onclick="popup('image', 'new_pano/images/1-6/3.png');playsound(bgsnd, 'new_pano/media/1-6/3.mp4', 0);" />
+		<hotspot name="spot4" url="images/arrow.png" ath="112.359" atv="2.099" onloaded="do_crop_animation(64,64, 40);" rotate="180" onclick="popup('iframe', 'new_pano/media/1-6/4.mp4', 1280, 720, false);" />
+	</scene>
+
+	<scene name="scene_1-7" title="1-7" onstart="" thumburl="panos/1-7.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-7.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-5" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-5);">
+			<point ath="-140.603" atv="-38.023" />
+			<point ath="-97.719" atv="-50.902" />
+			<point ath="-97.601" atv="50.233" />
+			<point ath="-140.753" atv="37.411" />
+		</hotspot>
+
+		<hotspot name="tp_1-8" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-8);">
+			<point ath="-11.838" atv="-26.683" />
+			<point ath="10.712" atv="-26.993" />
+			<point ath="10.682" atv="26.334" />
+			<point ath="-11.884" atv="26.188" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_1-8" title="1-8" onstart="" thumburl="panos/1-8.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-8.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-7" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-7);">
+			<point ath="-72.311" atv="-51.153" />
+			<point ath="-36.376" atv="-38.301" />
+			<point ath="-36.227" atv="37.650" />
+			<point ath="-72.027" atv="50.619" />
+		</hotspot>
+
+		<hotspot name="tp_1-6" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-6);">
+			<point ath="-25.842" atv="-32.672" />
+			<point ath="8.340" atv="-35.342" />
+			<point ath="8.323" atv="34.929" />
+			<point ath="-25.800" atv="32.252" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_1-new-1" title="1-new-1" onstart="" thumburl="panos/1-new-1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/1-new-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/1-new-1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-3" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_1-3);">
+			<point ath="66.244" atv="-30.381" />
+			<point ath="101.404" atv="-31.621" />
+			<point ath="101.604" atv="32.810" />
+			<point ath="65.886" atv="31.653" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_2-1" title="2-1" onstart="" thumburl="panos/2-1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_1-4" style="roomspot|skin_tooltips" tooltip="下楼" onclick="scene3dtransition(scene_1-4);">
+			<point ath="58.122" atv="-12.229" />
+			<point ath="70.698" atv="-13.268" />
+			<point ath="70.943" atv="20.822" />
+			<point ath="58.113" atv="18.852" />
+		</hotspot>
+
+		<hotspot name="tp_2-5" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-5);">
+			<point ath="103.045" atv="-13.639" />
+			<point ath="113.794" atv="-12.849" />
+			<point ath="113.577" atv="19.952" />
+			<point ath="102.645" atv="21.262" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-1/1.jpg');">
+			<point ath="52.969" atv="-34.902" />
+			<point ath="68.677" atv="-38.878" />
+			<point ath="68.849" atv="-30.202" />
+			<point ath="53.048" atv="-26.821" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-1/2.jpg');">
+			<point ath="101.156" atv="-39.982" />
+			<point ath="118.518" atv="-36.559" />
+			<point ath="118.605" atv="-28.095" />
+			<point ath="100.811" atv="-31.161" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-1/3.jpg');">
+			<point ath="58.031" atv="-19.285" />
+			<point ath="70.579" atv="-21.371" />
+			<point ath="70.578" atv="-15.373" />
+			<point ath="58.061" atv="-14.153" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-1/4.jpg');">
+			<point ath="102.869" atv="-22.042" />
+			<point ath="113.884" atv="-20.866" />
+			<point ath="113.801" atv="-14.792" />
+			<point ath="102.639" atv="-15.695" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-1/5.png');">
+			<point ath="53.235" atv="-22.811" />
+			<point ath="118.027" atv="-24.247" />
+			<point ath="115.264" atv="-22.043" />
+			<point ath="56.741" atv="-20.845" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="60.227" atv="-34.156" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-1/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="110.153" atv="-35.809" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-1/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="63.827" atv="-18.841" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-1/3.jpg');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="108.655" atv="-19.583" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-1/4.jpg');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="85.484" atv="-26.685" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-1/5.png');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_2-2" title="2-2" onstart="" thumburl="panos/2-2.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-2.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-2.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_2-3" title="2-3" onstart="" thumburl="panos/2-3.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-3.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-3.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-4" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-4);">
+			<point ath="-41.689" atv="21.180" />
+			<point ath="31.919" atv="28.429" />
+			<point ath="31.850" atv="-34.050" />
+			<point ath="-42.003" atv="-29.541" />
+		</hotspot>
+
+		<hotspot name="tp_2-12_1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-12);">
+			<point ath="52.892" atv="-23.430" />
+			<point ath="67.376" atv="-26.925" />
+			<point ath="67.750" atv="30.938" />
+			<point ath="53.067" atv="26.805" />
+		</hotspot>
+
+		<hotspot name="tp_2-12_2" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-12);">
+			<point ath="124.057" atv="-25.191" />
+			<point ath="136.492" atv="-21.440" />
+			<point ath="136.135" atv="24.378" />
+			<point ath="124.415" atv="29.203" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/1.jpg');">
+			<point ath="81.664" atv="-41.039" />
+			<point ath="107.200" atv="-40.249" />
+			<point ath="107.304" atv="-31.820" />
+			<point ath="81.921" atv="-32.267" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/2.jpg');">
+			<point ath="68.854" atv="-38.826" />
+			<point ath="80.093" atv="-40.741" />
+			<point ath="79.972" atv="-32.195" />
+			<point ath="68.884" atv="-30.624" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/3.jpg');">
+			<point ath="108.979" atv="-40.002" />
+			<point ath="119.490" atv="-37.659" />
+			<point ath="119.592" atv="-29.518" />
+			<point ath="109.179" atv="-31.463" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/4.jpg');">
+			<point ath="52.564" atv="-34.026" />
+			<point ath="67.141" atv="-38.511" />
+			<point ath="67.206" atv="-30.418" />
+			<point ath="52.561" atv="-26.494" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/5.jpg');">
+			<point ath="120.647" atv="-37.340" />
+			<point ath="137.068" atv="-31.825" />
+			<point ath="136.946" atv="-24.443" />
+			<point ath="120.889" atv="-29.519" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/6.jpg');">
+			<point ath="-129.048" atv="-30.226" />
+			<point ath="-115.299" atv="-34.466" />
+			<point ath="-115.443" atv="-26.436" />
+			<point ath="-129.231" atv="-22.805" />
+		</hotspot>
+
+		<hotspot name="pic_7" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/7.jpg');">
+			<point ath="-113.517" atv="-34.875" />
+			<point ath="-104.216" atv="-36.425" />
+			<point ath="-104.176" atv="-28.197" />
+			<point ath="-113.594" atv="-26.471" />
+		</hotspot>
+
+		<hotspot name="pic_8" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/8.jpg');">
+			<point ath="-102.228" atv="-36.702" />
+			<point ath="-74.569" atv="-36.924" />
+			<point ath="-74.656" atv="-28.358" />
+			<point ath="-102.189" atv="-28.044" />
+		</hotspot>
+
+		<hotspot name="pic_9" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/9.jpg');">
+			<point ath="-73.202" atv="-36.694" />
+			<point ath="-63.936" atv="-35.091" />
+			<point ath="-63.907" atv="-26.852" />
+			<point ath="-73.383" atv="-28.126" />
+		</hotspot>
+
+		<hotspot name="pic_10" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-3/10.jpg');">
+			<point ath="-62.067" atv="-34.553" />
+			<point ath="-48.376" atv="-30.652" />
+			<point ath="-48.291" atv="-23.056" />
+			<point ath="-62.255" atv="-26.538" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="94.626" atv="-38.735" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="74.583" atv="-37.870" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="114.672" atv="-36.530" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/3.jpg');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="59.153" atv="-34.344" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/4.jpg');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="130.239" atv="-32.384" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/5.jpg');" use3dtransition="true" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="-122.763" atv="-29.958" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/6.jpg');" use3dtransition="true" />
+		<hotspot name="spot7" style="skin_hotspotstyle" ath="-108.904" atv="-33.698" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/7.jpg');" use3dtransition="true" />
+		<hotspot name="spot8" style="skin_hotspotstyle" ath="-88.198" atv="-35.147" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/8.jpg');" use3dtransition="true" />
+		<hotspot name="spot9" style="skin_hotspotstyle" ath="-68.681" atv="-33.934" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/9.jpg');" use3dtransition="true" />
+		<hotspot name="spot10" style="skin_hotspotstyle" ath="-54.754" atv="-30.688" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-3/10.jpg');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_2-4" title="2-4" onstart="" thumburl="panos/2-4.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-4.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-4.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-5" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-5);">
+			<point ath="81.456" atv="-14.607" />
+			<point ath="91.232" atv="-14.582" />
+			<point ath="90.965" atv="13.499" />
+			<point ath="81.623" atv="13.502" />
+		</hotspot>
+
+		<hotspot name="tp_2-3" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-3);">
+			<point ath="129.248" atv="-20.796" />
+			<point ath="168.837" atv="-29.485" />
+			<point ath="168.928" atv="20.513" />
+			<point ath="129.231" atv="12.168" />
+		</hotspot>
+
+		<hotspot name="tp_2-10" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-10);">
+			<point ath="-131.867" atv="-64.031" />
+			<point ath="-45.300" atv="-61.759" />
+			<point ath="-45.528" atv="54.522" />
+			<point ath="-131.680" atv="56.290" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/1.jpg');">
+			<point ath="92.131" atv="-14.137" />
+			<point ath="113.405" atv="-12.906" />
+			<point ath="113.487" atv="11.366" />
+			<point ath="92.926" atv="12.134" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/2.jpg');">
+			<point ath="81.395" atv="-21.078" />
+			<point ath="90.698" atv="-21.149" />
+			<point ath="90.797" atv="-16.349" />
+			<point ath="81.784" atv="-16.166" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/3.jpg');">
+			<point ath="91.654" atv="-21.118" />
+			<point ath="97.224" atv="-20.850" />
+			<point ath="96.964" atv="-16.195" />
+			<point ath="91.685" atv="-16.388" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/4.jpg');">
+			<point ath="98.326" atv="-21.115" />
+			<point ath="108.865" atv="-19.820" />
+			<point ath="108.903" atv="-15.468" />
+			<point ath="98.543" atv="-16.121" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/5.jpg');">
+			<point ath="109.880" atv="-19.976" />
+			<point ath="114.347" atv="-19.334" />
+			<point ath="114.185" atv="-14.821" />
+			<point ath="109.503" atv="-15.608" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-4/6.jpg');">
+			<point ath="115.242" atv="-19.307" />
+			<point ath="123.587" atv="-17.813" />
+			<point ath="123.780" atv="-13.433" />
+			<point ath="115.667" atv="-14.763" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="103.896" atv="-2.046" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="86.333" atv="-20.003" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="94.555" atv="-20.080" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/3.jpg');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="103.819" atv="-19.386" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/4.jpg');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="112.063" atv="-19.067" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/5.jpg');" use3dtransition="true" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="119.463" atv="-17.696" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-4/6.jpg');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_2-5" title="2-5" onstart="" thumburl="panos/2-5.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-5.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-5.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-1);">
+			<point ath="-18.734" atv="61.124" />
+			<point ath="42.515" atv="55.285" />
+			<point ath="43.256" atv="-53.152" />
+			<point ath="-19.755" atv="-59.488" />
+		</hotspot>
+
+		<hotspot name="tp_2-11" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-11);">
+			<point ath="51.674" atv="-46.884" />
+			<point ath="118.088" atv="-50.989" />
+			<point ath="117.586" atv="60.091" />
+			<point ath="51.616" atv="56.831" />
+		</hotspot>
+
+		<hotspot name="tp_2-4" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-4);">
+			<point ath="170.530" atv="-20.376" />
+			<point ath="-174.637" atv="-20.592" />
+			<point ath="-174.451" atv="22.281" />
+			<point ath="170.780" atv="22.021" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_2-6" title="2-6" onstart="" thumburl="panos/2-6.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-6.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-6.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_2-7" title="2-7" onstart="" thumburl="panos/2-7.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-7.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-7.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_2-8" title="2-8" onstart="" thumburl="panos/2-8.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-8.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-8.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_2-9" title="2-9" onstart="" thumburl="panos/2-9.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-9.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-9.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+	</scene>
+
+	<scene name="scene_2-10" title="2-10" onstart="" thumburl="panos/2-10.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-10.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-10.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-4" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-4);">
+			<point ath="113.016" atv="-24.946" />
+			<point ath="121.721" atv="-32.299" />
+			<point ath="121.817" atv="22.593" />
+			<point ath="113.186" atv="15.956" />
+		</hotspot>
+
+		<hotspot name="tp_3-1" style="roomspot|skin_tooltips" tooltip="上楼" onclick="scene3dtransition(scene_3-1);">
+			<point ath="33.921" atv="-51.722" />
+			<point ath="51.166" atv="-59.640" />
+			<point ath="71.018" atv="-44.477" />
+			<point ath="70.767" atv="-31.709" />
+			<point ath="99.118" atv="-4.991" />
+			<point ath="100.845" atv="22.826" />
+			<point ath="96.054" atv="23.263" />
+			<point ath="66.758" atv="-11.721" />
+			<point ath="57.634" atv="-10.743" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_2-11" title="2-11" onstart="" thumburl="panos/2-11.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-11.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-11.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-5" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-5);">
+			<point ath="114.616" atv="-28.818" />
+			<point ath="114.662" atv="38.186" />
+			<point ath="83.475" atv="40.255" />
+			<point ath="83.038" atv="-30.877" />
+		</hotspot>
+
+	</scene>
+
+	<scene name="scene_2-12" title="2-12" onstart="" thumburl="panos/2-12.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/2-12.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/2-12.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-3_1" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-3);">
+			<point ath="62.083" atv="-16.459" />
+			<point ath="62.196" atv="20.270" />
+			<point ath="73.172" atv="21.983" />
+			<point ath="72.815" atv="-17.841" />
+		</hotspot>
+
+		<hotspot name="tp_2-3_2" style="roomspot|skin_tooltips" tooltip="进入" onclick="scene3dtransition(scene_2-3);">
+			<point ath="108.714" atv="-17.390" />
+			<point ath="119.018" atv="-16.264" />
+			<point ath="119.036" atv="20.138" />
+			<point ath="108.563" atv="21.430" />
+		</hotspot>
+
+		<hotspot name="pic_1" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/1.jpg');">
+			<point ath="58.487" atv="-40.285" />
+			<point ath="75.383" atv="-43.458" />
+			<point ath="75.630" atv="-34.052" />
+			<point ath="58.302" atv="-30.896" />
+		</hotspot>
+
+		<hotspot name="pic_2" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/2.jpg');">
+			<point ath="77.998" atv="-43.727" />
+			<point ath="105.613" atv="-43.093" />
+			<point ath="105.885" atv="-33.461" />
+			<point ath="78.050" atv="-34.150" />
+		</hotspot>
+
+		<hotspot name="pic_3" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/3.jpg');">
+			<point ath="108.115" atv="-42.930" />
+			<point ath="122.602" atv="-39.107" />
+			<point ath="123.314" atv="-29.713" />
+			<point ath="107.783" atv="-33.476" />
+		</hotspot>
+
+		<hotspot name="pic_4" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/4.jpg');">
+			<point ath="62.122" atv="-22.550" />
+			<point ath="72.809" atv="-24.048" />
+			<point ath="72.822" atv="-19.098" />
+			<point ath="62.185" atv="-17.945" />
+		</hotspot>
+
+		<hotspot name="pic_5" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/5.jpg');">
+			<point ath="108.653" atv="-23.616" />
+			<point ath="118.781" atv="-22.212" />
+			<point ath="118.364" atv="-17.486" />
+			<point ath="108.664" atv="-18.947" />
+		</hotspot>
+
+		<hotspot name="pic_6" style="roomspot|skin_tooltips" tooltip="查看" onclick="popup('image', 'new_pano/images/2-12/6.png');">
+			<point ath="59.046" atv="-26.600" />
+			<point ath="122.532" atv="-25.490" />
+			<point ath="121.416" atv="-24.098" />
+			<point ath="60.076" atv="-24.799" />
+		</hotspot>
+
+		<hotspot name="spot1" style="skin_hotspotstyle" ath="66.748" atv="-39.074" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/1.jpg');" use3dtransition="true" />
+		<hotspot name="spot2" style="skin_hotspotstyle" ath="91.748" atv="-40.903" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/2.jpg');" use3dtransition="true" />
+		<hotspot name="spot3" style="skin_hotspotstyle" ath="116.521" atv="-37.708" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/3.jpg');" use3dtransition="true" />
+		<hotspot name="spot4" style="skin_hotspotstyle" ath="67.435" atv="-22.123" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/4.jpg');" use3dtransition="true" />
+		<hotspot name="spot5" style="skin_hotspotstyle" ath="114.176" atv="-21.635" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/5.jpg');" use3dtransition="true" />
+		<hotspot name="spot6" style="skin_hotspotstyle" ath="90.955" atv="-29.880" url="new_pano/images/animatedhotspot_white.png" onloaded="do_crop_animation(64,64, 30);" onclick="popup('image', 'new_pano/images/2-12/6.png');" use3dtransition="true" />
+
+	</scene>
+
+	<scene name="scene_3-1" title="3-1" onstart="" thumburl="panos/3-1.tiles/thumb.jpg" lat="" lng="" alt="" heading="">
+		
+		<control bouncinglimits="calc:image.cube ? true : false" />
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/3-1.tiles/preview.jpg" />
+
+		<image>
+			<cube url="panos/3-1.tiles/%s/l%l/%v/l%l_%s_%v_%h.jpg" multires="512,640,1280,2624" />
+		</image>
+
+		<hotspot name="tp_2-10" style="roomspot|skin_tooltips" tooltip="下楼" onclick="scene3dtransition(scene_2-10);">
+			<point ath="2.078" atv="17.484" />
+			<point ath="20.515" atv="16.820" />
+			<point ath="43.743" atv="34.819" />
+			<point ath="-3.141" atv="41.669" />
+		</hotspot>
+
+	</scene>
+
+
+</krpano>
