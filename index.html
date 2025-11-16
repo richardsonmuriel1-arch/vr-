@@ -2,36 +2,40 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>VR全景对比</title>
+    <title>阮氏旧宅VR展览</title>
     <link rel="stylesheet" href="static/index.css">
-    <style src="krpano/tour.js"> </style>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 1. 选择页面 -->
     <div class="select-page" id="selectPage">
-        <h1 class="select-title">选择VR全景版本</h1>
+        <h1 class="chinese-title">阮氏旧宅VR展览</h1>
         <div class="select-buttons">
-            <!-- 添加按钮点击声音 -->
-            <audio id="clickSound" preload="auto">
-                <source src="click-sound.mp3" type="audio/mpeg"> <!-- 替换为你的Q版声音文件 -->
+            <audio id="hoverSound" preload="auto">
+                <source src="template/sound/chupeng.MP3" type="audio/mpeg"> <!-- 触碰音效文件 -->
             </audio>
-            <button class="select-btn" data-type="new" onclick="document.getElementById('clickSound').play()">查看新全景（做旧前）</button>
-            <button class="select-btn" data-type="old" onclick="document.getElementById('clickSound').play()">查看旧全景（做旧后）</button>
+            <button class="select-btn" 
+                    data-type="new" 
+                    onmouseover="playHoverSound()" 
+                    onclick="playClickSound('new')">
+                查看新全景
+            </button>
+            <button class="select-btn" 
+                    data-type="old" 
+                    onmouseover="playHoverSound()" 
+                    onclick="playClickSound('old')">
+                查看旧全景
+            </button>
         </div>
     </div>
-
-    <!-- 2. 全景展示页面 -->
     <div class="pano-page" id="panoPage">
-        <div id="pano-container"></div> <!-- 全景渲染容器 -->
+        <div id="pano-container"></div> 
         <button class="exit-btn" id="exitBtn">退出展览</button>
-        <!-- 加载动画 -->
          <div class="loading" id="loading">
             <div class="spinner"></div>
             <p>加载中...</p>
          </div>
     </div>
-
-    <!-- 引入krpano核心库（共用一个，通过XML切换全景） -->
     <script src="krpano/tour.js"></script>
     <script src="main.js"></script>
 </body>

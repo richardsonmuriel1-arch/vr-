@@ -30,19 +30,19 @@ function loadPano(type) {
         clickSound.pause();
         clickSound.currentTime = 0;
     }
-    // 1. 彻底清空容器（关键修复：清除所有旧DOM）
+    //彻底清空容器（关键修复：清除所有旧DOM）
     panoContainer.innerHTML = ''; 
     currentPano = null;
 
-    // 2. 全景配置路径（确保新/旧全景XML独立）
+    //全景配置路径（确保新/旧全景XML独立）
     const [xmlPath, resourcePrefix] = type === 'new' 
         ? ['new_pano/tour.xml', 'new_pano/']  // 新全景资源前缀
         : ['old_pano/tour.xml', 'old_pano/']; // 旧全景资源前缀
 
-    // 3. 生成唯一ID，避免冲突
+    // 生成唯一ID，避免冲突
     const panoId = `pano-${type}-${Date.now()}`;
 
-    // 4. 加载全景时传入资源前缀（供XML中动态引用）
+    // 加载全景时传入资源前缀（供XML中动态引用）
     currentPano = embedpano({
         swf: `${resourcePrefix}tour.swf`,
         xml: xmlPath,
@@ -60,18 +60,27 @@ function loadPano(type) {
         }
     });
 
-    // 超时容错
-    loadTimeout = setTimeout(() => {
-        console.warn('加载超时');
-        loading.style.display = 'none';
-    }, 10000);
+}
+
+function playHoverSound() {
+    const hoverSound = document.getElementById('hoverSound');
+    if (hoverSound) {
+        // 关键：先暂停当前播放，重置到开头，再播放（解决快速连续触发时只播放一次的问题）
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+        // 播放音效（处理浏览器自动播放限制）
+        hoverSound.play().catch(err => {
+            console.log('触碰音效播放失败:', err);
+            // 若因浏览器限制失败，可尝试用户交互后再激活（如首次点击后解锁）
+        });
+    }
 }
 
 // 退出全景（确保彻底清除）
 document.getElementById('exitBtn').addEventListener('click', () => {
     if (loadTimeout) clearTimeout(loadTimeout);
 
-    // 1. 停止krpano内部所有音频（核心修复）
+    // 停止krpano内部所有音频（核心修复）
     if (currentPano && currentPano.call) {
         // 停止所有krpano管理的音频（包括背景音、热点音等）
         currentPano.call("stopallsounds();");
@@ -79,18 +88,18 @@ document.getElementById('exitBtn').addEventListener('click', () => {
         currentPano.call("unloadpano();");
     }
 
-    // 2. 停止页面独立的点击音效
+    // 停止页面独立的点击音效
     const clickSound = document.getElementById('clickSound');
     if (clickSound) {
         clickSound.pause();
         clickSound.currentTime = 0; // 重置播放位置
     }
 
-    // 3. 清除DOM并释放引用
+    //清除DOM并释放引用
     panoContainer.innerHTML = '';
     currentPano = null;
 
-    // 4. 页面切换
+    //页面切换
     panoPage.style.display = 'none';
     selectPage.style.display = 'flex';
 });
